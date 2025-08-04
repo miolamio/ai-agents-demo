@@ -1,0 +1,7 @@
+langchain
+langchain-openai
+pydantic-ai
+langgraph
+crewai
+python-dotenv
+requests
