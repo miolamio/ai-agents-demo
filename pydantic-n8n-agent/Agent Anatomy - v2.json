@@ -1,0 +1,172 @@
+{
+  "name": "Agent Anatomy - v2",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        0
+      ],
+      "id": "cb6dd17d-9e7c-4d42-bbf2-9b8e1568a785",
+      "name": "When chat message received",
+      "webhookId": "595d8aa9-9d5c-4a7b-a622-b0c4964b20e0"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=<AgentInstructions>\n  <Role>\n    <Name>Web Research Assistant</Name>\n    <Description>You are an AI agent specialized in conducting thorough web research and returning results in a structured JSON format for easy integration with other systems.</Description>\n    <currentDate>{{$now}}</currentDate>\n  </Role>\n  \n  <Goal>\n    <Primary>Conduct comprehensive web research on any given topic and return findings in a strictly structured JSON format that can be easily parsed and processed by downstream applications.</Primary>\n  </Goal>\n  \n  <Instructions>\n    <!-- 1. Research Process -->\n    <Instruction>\n      Always begin by using the Tavily tool to search for relevant, up-to-date information. Conduct multiple searches if needed to gather comprehensive data from various perspectives and sources.\n    </Instruction>\n    \n    <!-- 2. Output Structure -->\n    <Instruction>\n      You MUST return your response ONLY as a valid JSON object with the following structure:\n      {\n        \"query\": \"original search query\",\n        \"timestamp\": \"ISO 8601 timestamp\",\n        \"summary\": \"brief 2-3 sentence overview of findings\",\n        \"key_findings\": [\n          {\n            \"title\": \"finding title\",\n            \"description\": \"detailed description\",\n            \"source\": \"source URL or name\",\n            \"relevance_score\": 1-10\n          }\n        ],\n        \"categories\": {\n          \"main_topic\": \"primary subject area\",\n          \"subtopics\": [\"subtopic1\", \"subtopic2\", \"subtopic3\"]\n        },\n        \"entities\": {\n          \"people\": [\"person1\", \"person2\"],\n          \"organizations\": [\"org1\", \"org2\"],\n          \"locations\": [\"location1\", \"location2\"],\n          \"dates\": [\"date1\", \"date2\"]\n        },\n        \"sentiment\": \"positive/neutral/negative\",\n        \"confidence_level\": \"high/medium/low\",\n        \"additional_queries\": [\"suggested follow-up query 1\", \"suggested follow-up query 2\"]\n      }\n    </Instruction>\n    \n    <!-- 3. Research Guidelines -->\n    <Instruction>\n      Follow these research guidelines:\n      - Verify information across multiple sources when possible\n      - Focus on recent and authoritative sources\n      - Extract key entities (people, places, organizations, dates)\n      - Identify the main topic and related subtopics\n      - Assess the overall sentiment of the information\n      - Rate your confidence based on source quality and consistency\n      - Suggest follow-up queries for deeper investigation\n    </Instruction>\n    \n    <!-- 4. Tools Available -->\n    <Instruction>\n      Tools accessible to this Agent:\n      1) Tavily Search - for gathering web information from multiple search engines\n    </Instruction>\n    \n    <!-- 5. Critical Requirements -->\n    <Instruction>\n      CRITICAL: \n      - Output ONLY valid JSON, no additional text or explanations\n      - All text values must be properly escaped for JSON\n      - Arrays must contain at least one item or be empty []\n      - Numeric values (like relevance_score) must be integers between 1-10\n      - confidence_level must be exactly \"high\", \"medium\", or \"low\"\n      - sentiment must be exactly \"positive\", \"neutral\", or \"negative\"\n      - ISO 8601 timestamp format: YYYY-MM-DDTHH:mm:ssZ\n      \n      DO NOT include any text before or after the JSON object.\n      DO NOT wrap the JSON in markdown code blocks.\n      DO NOT add comments or explanations.\n      ONLY output the raw JSON object.\n    </Instruction>\n  </Instructions>\n</AgentInstructions>"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        512,
+        0
+      ],
+      "id": "5ac17b84-326f-4b7b-8a9d-33f261ab920d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        224
+      ],
+      "id": "66ebaae9-ba2a-4cee-9f62-de363d64ce78",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "qKk5wVYPDLRt63R9",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        544,
+        224
+      ],
+      "id": "27c53e7a-51e7-4762-90b6-e2e1a9ffc3ac",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"query\": \"Последние тренды в области искусственного интеллекта в 2024 году\",\n  \"timestamp\": \"2024-12-19T14:30:00Z\",\n  \"summary\": \"В 2024 году ключевыми трендами ИИ стали мультимодальные модели, AI-агенты для автоматизации задач и растущее внимание к безопасности ИИ. Компании активно внедряют генеративный ИИ в бизнес-процессы, а регуляторы усиливают контроль.\",\n  \"key_findings\": [\n    {\n      \"title\": \"Мультимодальные AI модели\",\n      \"description\": \"Модели, способные работать одновременно с текстом, изображениями, видео и аудио, стали новым стандартом. GPT-4V, Gemini Ultra и Claude 3 демонстрируют впечатляющие возможности понимания контекста.\",\n      \"source\": \"https://openai.com/research\",\n      \"relevance_score\": 10\n    },\n    {\n      \"title\": \"AI-агенты и автономные системы\",\n      \"description\": \"Переход от чат-ботов к полноценным AI-агентам, способным выполнять сложные многошаговые задачи. AutoGPT, AgentGPT и корпоративные решения набирают популярность.\",\n      \"source\": \"https://techcrunch.com/ai\",\n      \"relevance_score\": 9\n    },\n    {\n      \"title\": \"Регулирование ИИ\",\n      \"description\": \"EU AI Act вступил в силу, США разрабатывает национальную стратегию. Компании адаптируются к новым требованиям безопасности и прозрачности.\",\n      \"source\": \"https://eu-aiact.com\",\n      \"relevance_score\": 8\n    }\n  ],\n  \"categories\": {\n    \"main_topic\": \"Artificial Intelligence Trends\",\n    \"subtopics\": [\"Generative AI\", \"AI Safety\", \"Multimodal Models\", \"AI Regulation\", \"Enterprise AI\"]\n  },\n  \"entities\": {\n    \"people\": [\"Sam Altman\", \"Demis Hassabis\", \"Yann LeCun\", \"Andrew Ng\"],\n    \"organizations\": [\"OpenAI\", \"Google DeepMind\", \"Anthropic\", \"Meta AI\", \"Microsoft\"],\n    \"locations\": [\"Silicon Valley\", \"European Union\", \"China\", \"United States\"],\n    \"dates\": [\"2024\", \"March 2024\", \"Q4 2024\", \"2025 forecast\"]\n  },\n  \"sentiment\": \"positive\",\n  \"confidence_level\": \"high\",\n  \"additional_queries\": [\n    \"Сравнение возможностей GPT-4 и Claude 3\",\n    \"Влияние EU AI Act на развитие технологий\",\n    \"Прогнозы развития ИИ на 2025 год\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        816,
+        224
+      ],
+      "id": "c4f24018-ec39-43e7-80d2-200acda80a83",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavilyTool",
+      "typeVersion": 1,
+      "position": [
+        672,
+        224
+      ],
+      "id": "f911f153-b9b2-482b-8d2f-d3dd49fc626f",
+      "name": "Search in Tavily",
+      "credentials": {
+        "tavilyApi": {
+          "id": "kbHZS3ttd4cY9wGS",
+          "name": "Tavily account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search in Tavily": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "76d85a3d-2e23-43c1-aeaf-adee941ff6e0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2d4526d7e2b7123bfb0e1996caa47744a7651d73096bbc7220a5e9657d119dfc"
+  },
+  "id": "bZlxxhas4DYqEaER",
+  "tags": []
+}

@@ -1,7 +1,10 @@
 langchain
 langchain-openai
-pydantic-ai
+pydantic-ai[openai]
+pydantic-ai-slim[duckduckgo]
 langgraph
 crewai
 python-dotenv
 requests
+openai
+pytest
