@@ -1,0 +1,36 @@
+# Основные зависимости для демонстрации многоагентных систем
+# Занятие 4: LangGraph, CrewAI, AutoGen
+
+# Общие зависимости
+openai>=1.0.0
+langchain>=0.1.0
+langchain-openai>=0.1.0
+langchain-core>=0.1.0
+
+# LangGraph и связанные библиотеки
+langgraph>=0.0.40
+langgraph-checkpoint-sqlite>=1.0.0
+langchain-community>=0.1.0
+
+# CrewAI и инструменты
+crewai>=0.28.0
+crewai-tools>=0.1.0
+
+# AutoGen
+autogen-agentchat>=0.2.0
+
+# Инструменты для поиска
+tavily-python>=0.3.0
+
+# Дополнительные утилиты
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+typing-extensions>=4.0.0
+
+# Для визуализации (опционально)
+graphviz>=0.20.0
+matplotlib>=3.7.0
+
+# Для тестирования
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
