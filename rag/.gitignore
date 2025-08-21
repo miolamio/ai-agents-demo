@@ -1,0 +1,38 @@
+# Python кеш файлы
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Временные векторные базы данных (создаются автоматически)
+demo_chroma/
+demo_chroma_comparison/
+temp_chroma_benchmark/
+demo_faiss_index/
+*.faiss
+*.pkl
+
+# ChromaDB базы данных
+chroma.sqlite3
+*.sqlite3
+
+# Временные файлы
+*.tmp
+*.temp
+
+# Логи
+*.log
+
+# Переменные окружения (содержат API ключи)
+.env
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# IDE файлы
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS файлы
+.DS_Store
