@@ -1,0 +1,36 @@
+# Зависимости для примеров кода седьмого занятия
+# Производственная эксплуатация LLM агентов
+
+# Наблюдаемость и трассировка
+langsmith>=0.1.0
+langfuse>=2.0.0
+
+# Программирование языковых моделей
+dspy-ai>=2.4.0
+
+# Контроль затрат и маршрутизация
+litellm>=1.35.0
+
+# Дополнительные зависимости для демонстраций
+openai>=1.0.0
+anthropic>=0.25.0
+pydantic>=2.0.0
+python-dotenv>=1.0.0  # Для автоматической загрузки .env файлов
+openai>=1.0.0  # OpenAI API для чата с LLM
+
+# LangChain для example3f_langchain_agent.py
+langchain>=0.1.0
+langchain-openai>=0.1.0
+langchain-core>=0.1.0
+
+# DSPy для example2b_dspy_openai.py
+dspy-ai>=2.4.0
+
+# Для веб-интерфейсов и аналитики (опционально)
+streamlit>=1.28.0
+plotly>=5.15.0
+pandas>=2.0.0
+
+# Для самостоятельного развертывания LangFuse (опционально)
+# docker-compose
+# postgresql

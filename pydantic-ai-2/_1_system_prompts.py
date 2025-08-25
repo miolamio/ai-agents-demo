@@ -20,3 +20,4 @@ def add_user_name(ctx: RunContext[UserData]) -> str:
 user = UserData(name="Иван")
 result = agent.run_sync("Как меня зовут?", deps=user)
 print(result.output)
+#print(result)
